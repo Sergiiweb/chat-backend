@@ -4,7 +4,7 @@ config();
 
 export const configs = {
     DB_URI: process.env.DB_URI,
-    PORT: process.env.PORT || 5001,
+    PORT: process.env.PORT || 5000,
     FRONT_URL: process.env.FRONT_URL || "http://0.0.0.0:3000",
 
     SECRET_SALT: process.env.SECRET_SALT || 7,
