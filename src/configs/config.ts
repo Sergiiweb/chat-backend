@@ -13,4 +13,7 @@ export const configs = {
   JWT_REFRESH_SECRET: process.env.JWT_REFRESH_SECRET,
   JWT_ACTIVATE_SECRET: process.env.JWT_ACTIVATE_SECRET,
   JWT_FORGOT_SECRET: process.env.JWT_FORGOT_SECRET,
+
+  AVATAR:
+    "https://lh3.googleusercontent.com/a/ACg8ocK1L2ougiEVgw5IJ4ewaBcVo6rfegncxqsf6Sq5m3TqxHX4Zw=s96-c",
 };

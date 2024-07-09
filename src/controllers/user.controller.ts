@@ -2,6 +2,7 @@ import bcrypt from "bcryptjs";
 import { Response } from "express";
 import jwt from "jsonwebtoken";
 
+import { configs } from "../configs/config";
 import { db } from "../configs/firebase.config";
 import { AuthenticatedRequest } from "../types/req.type";
 
@@ -59,9 +60,13 @@ export const loginUser = async (
       return;
     }
 
-    const token = jwt.sign({ email: userData.email }, "your_jwt_secret", {
-      expiresIn: "1h",
-    });
+    const token = jwt.sign(
+      { email: userData.email, username: userData.username },
+      configs.JWT_ACCESS_SECRET,
+      {
+        expiresIn: "1h",
+      },
+    );
 
     res.json({
       token,

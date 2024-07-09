@@ -1,26 +1,26 @@
 import { Request, Response } from "express";
 import { v4 as uuidv4 } from "uuid";
 
+import { configs } from "../configs/config";
 import { bucket, db } from "../configs/firebase.config";
-
-interface AuthenticatedRequest extends Request {
-  user?: { email: string };
-}
+import { AuthenticatedRequest } from "../types/req.type";
 
 export const sendMessage = async (
   req: AuthenticatedRequest,
   res: Response,
 ): Promise<void> => {
-  const { chatId, text, files } = req.body;
-  const { email } = req.user!;
+  const { text, files, photoURL } = req.body;
+  const { email, username } = req.user;
 
   try {
     const message = {
-      chatId,
-      sender: email,
+      displayName: username,
       text,
+      email,
+      photoURL: photoURL || configs.AVATAR,
       files: files || [],
-      createdAt: new Date().toISOString(),
+      uid: uuidv4(),
+      createdAt: new Date(),
     };
 
     const messageRef = await db.collection("messages").add(message);
@@ -35,12 +35,9 @@ export const getMessages = async (
   req: Request,
   res: Response,
 ): Promise<void> => {
-  const { chatId } = req.params;
-
   try {
     const messagesSnapshot = await db
       .collection("messages")
-      .where("chatId", "==", chatId)
       .orderBy("createdAt", "asc")
       .get();
 
@@ -59,20 +56,25 @@ export const editMessage = async (
   req: AuthenticatedRequest,
   res: Response,
 ): Promise<void> => {
-  const { messageId } = req.params;
+  const { uid } = req.params;
   const { text, files } = req.body;
   const { email } = req.user!;
 
   try {
-    const messageRef = db.collection("messages").doc(messageId);
-    const messageDoc = await messageRef.get();
+    const messagesSnapshot = await db
+      .collection("messages")
+      .where("uid", "==", uid)
+      .get();
 
-    if (!messageDoc.exists) {
+    if (messagesSnapshot.empty) {
       res.status(404).json({ message: "Message not found" });
       return;
     }
 
-    if (messageDoc.data().sender !== email) {
+    const messageDoc = messagesSnapshot.docs[0];
+    const messageRef = messageDoc.ref;
+
+    if (messageDoc.data().email !== email) {
       res.status(403).json({ message: "Unauthorized" });
       return;
     }
@@ -93,19 +95,24 @@ export const deleteMessage = async (
   req: AuthenticatedRequest,
   res: Response,
 ): Promise<void> => {
-  const { messageId } = req.params;
+  const { uid } = req.params;
   const { email } = req.user!;
 
   try {
-    const messageRef = db.collection("messages").doc(messageId);
-    const messageDoc = await messageRef.get();
+    const messagesSnapshot = await db
+      .collection("messages")
+      .where("uid", "==", uid)
+      .get();
 
-    if (!messageDoc.exists) {
+    if (messagesSnapshot.empty) {
       res.status(404).json({ message: "Message not found" });
       return;
     }
 
-    if (messageDoc.data().sender !== email) {
+    const messageDoc = messagesSnapshot.docs[0];
+    const messageRef = messageDoc.ref;
+
+    if (messageDoc.data().email !== email) {
       res.status(403).json({ message: "Unauthorized" });
       return;
     }
@@ -118,19 +125,52 @@ export const deleteMessage = async (
   }
 };
 
-export const uploadFiles = async (
-  req: AuthenticatedRequest,
+export const getMessageByUid = async (
+  req: Request,
   res: Response,
 ): Promise<void> => {
-  const { files } = req.body;
+  const { uid } = req.params;
+
+  try {
+    const messagesSnapshot = await db
+      .collection("messages")
+      .where("uid", "==", uid)
+      .get();
+
+    if (messagesSnapshot.empty) {
+      res.status(404).json({ message: "Message not found" });
+      return;
+    }
+
+    const messageDoc = messagesSnapshot.docs[0];
+    const messageData = messageDoc.data();
+
+    res.json({ message: messageData });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+export const uploadFiles = async (
+  req: Request,
+  res: Response,
+): Promise<void> => {
+  const files = req.files as Express.Multer.File[];
+
+  if (!files || !Array.isArray(files)) {
+    res.status(400).json({ message: "No files uploaded" });
+    return;
+  }
+
+  console.log(files);
 
   try {
     const uploadedFiles = await Promise.all(
-      files.map(async (file: any) => {
+      files.map(async (file: Express.Multer.File) => {
         const fileName = `${uuidv4()}_${file.originalname}`;
         const fileRef = bucket.file(fileName);
 
-        await fileRef.save(Buffer.from(file.buffer, "base64"), {
+        await fileRef.save(file.buffer, {
           metadata: { contentType: file.mimetype },
           public: true,
         });
