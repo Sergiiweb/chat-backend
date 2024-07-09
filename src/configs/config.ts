@@ -9,7 +9,7 @@ export const configs = {
 
   SECRET_SALT: process.env.SECRET_SALT || 7,
 
-  JWT_ACCESS_SECRET: process.env.JWT_ACCESS_SECRET,
+  JWT_ACCESS_SECRET: process.env.JWT_ACCESS_SECRET || "your_jwt_secret",
   JWT_REFRESH_SECRET: process.env.JWT_REFRESH_SECRET,
   JWT_ACTIVATE_SECRET: process.env.JWT_ACTIVATE_SECRET,
   JWT_FORGOT_SECRET: process.env.JWT_FORGOT_SECRET,

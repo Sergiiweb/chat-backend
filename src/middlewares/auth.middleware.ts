@@ -1,6 +1,7 @@
 import { NextFunction, Response } from "express";
 import jwt from "jsonwebtoken";
 
+import { configs } from "../configs/config";
 import { AuthenticatedRequest } from "../types/req.type";
 
 export const authenticateToken = (
@@ -16,7 +17,7 @@ export const authenticateToken = (
     return;
   }
 
-  jwt.verify(token, "your_jwt_secret", (err, user) => {
+  jwt.verify(token, configs.JWT_ACCESS_SECRET, (err, user) => {
     if (err) {
       res.status(403).json({ message: "Invalid token" });
       return;

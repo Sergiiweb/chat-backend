@@ -1,5 +1,5 @@
 import bcrypt from "bcryptjs";
-import { Request, Response } from "express";
+import { Response } from "express";
 import jwt from "jsonwebtoken";
 
 import { db } from "../configs/firebase.config";
@@ -46,6 +46,12 @@ export const loginUser = async (
     }
 
     const userData = userDoc.data();
+
+    if (!userData) {
+      res.status(400).json({ message: "Invalid user data" });
+      return;
+    }
+
     const validPassword = await bcrypt.compare(password, userData!.password);
 
     if (!validPassword) {
@@ -53,13 +59,13 @@ export const loginUser = async (
       return;
     }
 
-    const token = jwt.sign({ email: userData!.email }, "your_jwt_secret", {
+    const token = jwt.sign({ email: userData.email }, "your_jwt_secret", {
       expiresIn: "1h",
     });
 
     res.json({
       token,
-      user: { email: userData!.email, username: userData!.username },
+      user: { email: userData.email, username: userData.username },
     });
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -80,7 +86,13 @@ export const getUser = async (
     }
 
     const userData = userDoc.data();
-    res.json({ email: userData!.email, username: userData!.username });
+
+    if (!userData) {
+      res.status(400).json({ message: "Invalid user data" });
+      return;
+    }
+
+    res.json({ email: userData.email, username: userData.username });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
