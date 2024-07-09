@@ -1,0 +1,378 @@
+{
+	"info": {
+		"_postman_id": "2b25776e-0b37-4b99-a95e-007c4fdd2c8a",
+		"name": "Chat",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "28780716"
+	},
+	"item": [
+		{
+			"name": "register",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\":\"sss@sss.com\",\r\n    \"username\":\"Serh\",\r\n    \"password\":\"122ddddd\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://0.0.0.0:5000/api/users/register",
+					"protocol": "http",
+					"host": [
+						"0",
+						"0",
+						"0",
+						"0"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"users",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\":\"sss@sss.com\",\r\n    \"password\":\"122ddddd\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://0.0.0.0:5000/api/users/login",
+					"protocol": "http",
+					"host": [
+						"0",
+						"0",
+						"0",
+						"0"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"users",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "logout",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\":\"sss@sss.com\",\r\n    \"password\":\"122ddddd\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://0.0.0.0:5000/api/users/logout",
+					"protocol": "http",
+					"host": [
+						"0",
+						"0",
+						"0",
+						"0"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"users",
+						"logout"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "me",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InNzc0Bzc3MuY29tIiwiaWF0IjoxNzIwNTIyNjYwLCJleHAiOjE3MjA1MjYyNjB9.qpqPc9OFOzcRgy6czsy50dE0PfodeSv1QiE_VsumcJI",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://0.0.0.0:5000/api/users/me",
+					"protocol": "http",
+					"host": [
+						"0",
+						"0",
+						"0",
+						"0"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"users",
+						"me"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "add message",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InNzc0Bzc3MyLmNvbSIsInVzZXJuYW1lIjoiU2VyaDIiLCJpYXQiOjE3MjA1MjYyNjUsImV4cCI6MTcyMDUyOTg2NX0.zXHeFCTTTmPv1yyImTvpyKv-7BjFINA7hE6qpKi_xCk",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"text\":\"Test from Postman\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://0.0.0.0:5000/api/messages",
+					"protocol": "http",
+					"host": [
+						"0",
+						"0",
+						"0",
+						"0"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"messages"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get messages",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InNzc0Bzc3MyLmNvbSIsInVzZXJuYW1lIjoiU2VyaDIiLCJpYXQiOjE3MjA1MjYyNjUsImV4cCI6MTcyMDUyOTg2NX0.zXHeFCTTTmPv1yyImTvpyKv-7BjFINA7hE6qpKi_xCk",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://0.0.0.0:5000/api/messages",
+					"protocol": "http",
+					"host": [
+						"0",
+						"0",
+						"0",
+						"0"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"messages"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get message",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InNzc0Bzc3MyLmNvbSIsInVzZXJuYW1lIjoiU2VyaDIiLCJpYXQiOjE3MjA1MjYyNjUsImV4cCI6MTcyMDUyOTg2NX0.zXHeFCTTTmPv1yyImTvpyKv-7BjFINA7hE6qpKi_xCk",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://0.0.0.0:5000/api/messages/eiWSWlGXUvbreSGJZFnh63Kb3VG3",
+					"protocol": "http",
+					"host": [
+						"0",
+						"0",
+						"0",
+						"0"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"messages",
+						"eiWSWlGXUvbreSGJZFnh63Kb3VG3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "edit message",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InNzc0Bzc3MyLmNvbSIsInVzZXJuYW1lIjoiU2VyaDIiLCJpYXQiOjE3MjA1Mjk5NTYsImV4cCI6MTcyMDUzMzU1Nn0.sUN9792u0JEtPdq4nFW7lmJ8Wr5ZbAZRVvqYqzlvgok",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"text\":\"Testtest 3 from Postman\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://0.0.0.0:5000/api/messages/a36323d3-42a1-4292-98cf-f5c53d95276f",
+					"protocol": "http",
+					"host": [
+						"0",
+						"0",
+						"0",
+						"0"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"messages",
+						"a36323d3-42a1-4292-98cf-f5c53d95276f"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete message",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InNzc0Bzc3MyLmNvbSIsInVzZXJuYW1lIjoiU2VyaDIiLCJpYXQiOjE3MjA1MzgzMDksImV4cCI6MTcyMDU0MTkwOX0.5ezW-yke-LNggqvLa96dC7bCVqP_Z9uKaQhcZDJD_6s",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://0.0.0.0:5000/api/messages/eiWSWlGXUvbreSGJZFnh63Kb3VG3",
+					"protocol": "http",
+					"host": [
+						"0",
+						"0",
+						"0",
+						"0"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"messages",
+						"eiWSWlGXUvbreSGJZFnh63Kb3VG3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "add files",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InNzc0Bzc3MyLmNvbSIsInVzZXJuYW1lIjoiU2VyaDIiLCJpYXQiOjE3MjA1NDIxNTUsImV4cCI6MTcyMDU0NTc1NX0.e-a7jFMBFSr2l67QQVDgK0aafxtCUkxOOD_ZbyIaMIU",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "files",
+							"type": "file",
+							"src": "/C:/Users/User/Desktop/EDUCATION/avatar.jpg"
+						},
+						{
+							"key": "files",
+							"type": "file",
+							"src": "/C:/Users/User/Desktop/EDUCATION/logo.png"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://0.0.0.0:5000/api/messages/upload",
+					"protocol": "http",
+					"host": [
+						"0",
+						"0",
+						"0",
+						"0"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"messages",
+						"upload"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
