@@ -1,6 +1,3 @@
-
-class AuthController {
-
-}
+class AuthController {}
 
 export const authController = new AuthController();

@@ -1,5 +1,3 @@
-class UserRepository {
-
-}
+class UserRepository {}
 
 export const userRepository = new UserRepository();

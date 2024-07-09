@@ -1,5 +1,3 @@
-export class TokenRepository {
-
-}
+export class TokenRepository {}
 
 export const tokenRepository = new TokenRepository();
