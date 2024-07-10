@@ -13,15 +13,10 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use("/api/users", userRouter);
 app.use("/api/messages", messageRouter);
-// app.use("/auth", authRouter);
 
-app.use((error: any, req: Request, res: Response, next: NextFunction) => {
-  const status = error.status || 500;
-
-  res.status(status).json({
-    message: error.message,
-    status: error.status,
-  });
+app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
+  console.error(err.stack);
+  res.status(500).json({ message: err.message });
 });
 
 app.listen(configs.PORT, async () => {

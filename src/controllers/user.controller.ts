@@ -1,104 +1,53 @@
-import bcrypt from "bcryptjs";
-import { Response } from "express";
-import jwt from "jsonwebtoken";
+import { NextFunction, Response } from "express";
 
-import { configs } from "../configs/config";
-import { db } from "../configs/firebase.config";
+import {
+  getUserService,
+  loginUserService,
+  registerUserService,
+} from "../services/user.service";
 import { AuthenticatedRequest } from "../types/req.type";
 
 export const registerUser = async (
   req: AuthenticatedRequest,
   res: Response,
+  next: NextFunction,
 ): Promise<void> => {
   const { email, password, username } = req.body;
 
   try {
-    const userDoc = await db.collection("users").doc(email).get();
-    if (userDoc.exists) {
-      res.status(400).json({ message: "User already exists" });
-      return;
-    }
-
-    const hashedPassword = await bcrypt.hash(password, 10);
-    await db.collection("users").doc(email).set({
-      email,
-      username,
-      password: hashedPassword,
-      createdAt: new Date().toISOString(),
-    });
-
-    res.status(201).json({ message: "User registered successfully" });
+    const result = await registerUserService(email, password, username);
+    res.status(201).json(result);
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    next(error);
   }
 };
 
 export const loginUser = async (
   req: AuthenticatedRequest,
   res: Response,
+  next: NextFunction,
 ): Promise<void> => {
   const { email, password } = req.body;
 
   try {
-    const userDoc = await db.collection("users").doc(email).get();
-    if (!userDoc.exists) {
-      res.status(400).json({ message: "Invalid credentials" });
-      return;
-    }
-
-    const userData = userDoc.data();
-
-    if (!userData) {
-      res.status(400).json({ message: "Invalid user data" });
-      return;
-    }
-
-    const validPassword = await bcrypt.compare(password, userData!.password);
-
-    if (!validPassword) {
-      res.status(400).json({ message: "Invalid credentials" });
-      return;
-    }
-
-    const token = jwt.sign(
-      { email: userData.email, username: userData.username },
-      configs.JWT_ACCESS_SECRET,
-      {
-        expiresIn: "1h",
-      },
-    );
-
-    res.json({
-      token,
-      user: { email: userData.email, username: userData.username },
-    });
+    const result = await loginUserService(email, password);
+    res.json(result);
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    next(error);
   }
 };
 
 export const getUser = async (
   req: AuthenticatedRequest,
   res: Response,
+  next: NextFunction,
 ): Promise<void> => {
   const { email } = req.user;
 
   try {
-    const userDoc = await db.collection("users").doc(email).get();
-    if (!userDoc.exists) {
-      res.status(404).json({ message: "User not found" });
-      return;
-    }
-
-    const userData = userDoc.data();
-
-    if (!userData) {
-      res.status(400).json({ message: "Invalid user data" });
-      return;
-    }
-
-    res.json({ email: userData.email, username: userData.username });
+    const result = await getUserService(email);
+    res.json(result);
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    next(error);
   }
 };
